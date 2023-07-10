@@ -1,0 +1,10 @@
+[Unit]
+Description=Cowave sample
+#After=xxx.service
+#Requires=xxx.service
+
+[Service]
+ExecStart=/opt/cowave/bin/sample
+
+[Install]
+WantedBy=multi-user.target
