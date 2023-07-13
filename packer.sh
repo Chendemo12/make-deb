@@ -58,7 +58,7 @@ move_bin() {
   # 判断是否存在最新文件
   if [[ -n "$latest_file" ]]; then
     # 移动最新文件到apps目录
-    mv "$bin_dir/$latest_file" "$apps_dir/$latest_file"
+    mv "$bin_dir/$latest_file" "$apps_dir/$PACKAGE"
   else
     echo "未发现编译文件"
     exit 1
