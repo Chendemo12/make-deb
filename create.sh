@@ -16,12 +16,13 @@ delete_directories() {
   done
 }
 
+# Debian控制文件
 create_control_file() {
   local text="
     Package: $PROJECT_NAME
     Version: 0.0.1
     Architecture: $ARCH
-    Section: embedded
+    Section: utils
     Priority: optional
     Maintainer: apps.com
     Contact: apps.com
@@ -44,7 +45,7 @@ create_postinst_file() {
     # 安装完成后所需的配置工作, 一个软件包安装或升级完成后, postinst 脚本驱动命令, 启动或重起相应的服务
 
     echo \"Running postinst ...\"
-    systemctl enable $PROJECT_NAME
+    systemctl enable /opt/apps/lib/systemd/${PROJECT_NAME}.service
 
     exit 0
   "
@@ -87,7 +88,7 @@ create_prerm_file() {
     # 停止一个软件包的相关进程, 要卸载软件包的相关文件前执行
 
     echo \"Running prerm ...\"
-    systemctl disable $PROJECT_NAME
+    systemctl disable ${PROJECT_NAME}.service
 
     exit 0
   "
@@ -131,7 +132,7 @@ fi
 
 ARCH=$2
 if [[ -z "$ARCH" ]]; then
-  ARCH="armhf"
+  ARCH="arm64"
 fi
 
 echo "Create Project: '$PROJECT_NAME'"
@@ -139,6 +140,7 @@ echo "Create Project: '$PROJECT_NAME'"
 echo -e "\n+ Create DEBIAN files..."
 delete_directories "project/DEBIAN" "project/opt" "project/etc"
 mkdir -p project/DEBIAN/
+mkdir -p project/opt/apps/bin/
 
 create_conffiles_file
 create_control_file
