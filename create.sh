@@ -108,11 +108,16 @@ create_systemd_file() {
   local text="
     [Unit]
     Description=$PROJECT_NAME
-    #After=xxx.service
+    After=network.target
     #Requires=xxx.service
 
     [Service]
+    Type=simple
+    User=nobody
+    Restart=always
+    RestartSec=5s
     ExecStart=/opt/apps/bin/$PROJECT_NAME
+    ExecReload=/opt/apps/bin/$PROJECT_NAME
 
     [Install]
     WantedBy=multi-user.target
